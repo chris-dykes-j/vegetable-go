@@ -13,8 +13,12 @@ func main() {
 
 	http.HandleFunc("/", handler.IndexHandler)
 	http.HandleFunc("/edit/", handler.EditHandler)
+	http.HandleFunc("/add/", handler.AddHandler)
 	http.HandleFunc("/delete/", handler.DeleteHandler)
 	http.HandleFunc("/reload/", handler.ReloadHandler)
+	http.HandleFunc("/update/", handler.UpdateHandler)
+	http.HandleFunc("/create/", handler.CreateHandler)
+	http.HandleFunc("/download/", handler.DownloadHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 

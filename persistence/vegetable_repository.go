@@ -35,6 +35,7 @@ func GetOneHundredVegetables() []models.Vegetable {
 			log.Fatal(err)
 		}
 		vegetables = append(vegetables, models.Vegetable{
+			Id:            i,
 			RefDate:       line[0],
 			Geo:           line[1],
 			DguId:         line[2],
