@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Christopher Dykes - Vegetables</title>
+</head>
+<body>
+<h1>Vegetables</h1>
+<h2>Christopher Dykes - 041013556</h2>
+<button onclick="reloadVegetables()">Reload Data</button>
+<button onclick="exportVegetables()">Export as CSV</button>
+<br>
+<table>
+    <thead>
+    <tr>
+        <th>Ref Date</th>
+        <th>Geo</th>
+        <th>Dgu Id</th>
+        <th>Type of Product</th>
+        <th>Type of Storage</th>
+        <th>Uom</th>
+        <th>UomId</th>
+        <th>Scalar Factor</th>
+        <th>Scalar Id</th>
+        <th>Vector</th>
+        <th>Coordinate</th>
+        <th>Value</th>
+        <th>Status</th>
+        <th>Symbol</th>
+        <th>Terminated</th>
+        <th>Decimals</th>
+        <th>Options</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{range $index, $element := .}}
+        <tr>
+            <td>{{$element.RefDate}}</td>
+            <td>{{$element.Geo}}</td>
+            <td>{{$element.DguId}}</td>
+            <td>{{$element.TypeOfProduct}}</td>
+            <td>{{$element.TypeOfStorage}}</td>
+            <td>{{$element.Uom}}</td>
+            <td>{{$element.UomId}}</td>
+            <td>{{$element.ScalarFactor}}</td>
+            <td>{{$element.ScalarId}}</td>
+            <td>{{$element.Vector}}</td>
+            <td>{{$element.Coordinate}}</td>
+            <td>{{$element.Value}}</td>
+            <td>{{$element.Status}}</td>
+            <td>{{$element.Symbol}}</td>
+            <td>{{$element.Terminated}}</td>
+            <td>{{$element.Decimals}}</td>
+            <td>
+                <button onclick="location.href='/edit/{{$index}}'">Edit</button>
+                <button onclick="deleteVegetable({{$index}})">Delete</button>
+            </td>
+        </tr>
+    {{end}}
+    </tbody>
+</table>
+
+<script>
+    const deleteVegetable = (id) => {
+        fetch(`http://localhost:8080/delete/${id}`, {
+            method: "DELETE",
+            body: "id=" + id,
+        }).then(() => {
+            location.reload();
+        })
+    }
+    const reloadVegetables = () =>  {
+        fetch("http://localhost:8080/reload/", {
+            method: "GET",
+        }).then(() => {
+            location.reload();
+        })
+    }
+    const exportVegetables = () => {
+
+    }
+</script>
+
+</body>
+</html>

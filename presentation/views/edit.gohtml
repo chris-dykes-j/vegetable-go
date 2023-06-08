@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Christopher Dykes - Vegetables</title>
+</head>
+<body>
+<h1>Vegetables</h1>
+<h2>Christopher Dykes - 041013556</h2>
+<br>
+<form method="POST" action="/updateVegetable/">
+    <div>Ref Date: <input type="text" name="RefDate" value="{{.RefDate}}"></div>
+    <div>Geo: <input type="text" name="Geo" value="{{.Geo}}"></div>
+    <div>Dgu Id: <input type="text" name="DguId" value="{{.DguId}}"></div>
+    <div>Type of Product: <input type="text" name="TypeOfProduct" value="{{.TypeOfProduct}}"></div>
+    <div>Type of Storage: <input type="text" name="TypeOfStorage" value="{{.TypeOfStorage}}"></div>
+    <div>Uom: <input type="text" name="Uom" value="{{.Uom}}"></div>
+    <div>UomId: <input type="text" name="UomId" value="{{.UomId}}"></div>
+    <div>Scalar Factor: <input type="text" name="ScalarFactor" value="{{.ScalarFactor}}"></div>
+    <div>Scalar Id: <input type="text" name="ScalarId" value="{{.ScalarId}}"></div>
+    <div>Vector: <input type="text" name="Vector" value="{{.Vector}}"></div>
+    <div>Coordinate: <input type="text" name="Coordinate" value="{{.Coordinate}}"></div>
+    <div>Value: <input type="text" name="Value" value="{{.Value}}"></div>
+    <div>Status: <input type="text" name="Status" value="{{.Status}}"></div>
+    <div>Symbol: <input type="text" name="Symbol" value="{{.Symbol}}"></div>
+    <div>Terminated: <input type="text" name="Terminated" value="{{.Terminated}}"></div>
+    <div>Decimals: <input type="text" name="Decimals" value="{{.Decimals}}"></div>
+    <div><input type="submit" value="Update"></div>
+</form>
+</body>
+</html>
