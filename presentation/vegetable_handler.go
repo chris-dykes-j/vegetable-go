@@ -10,16 +10,19 @@ import (
 	"strconv"
 )
 
+// VegetableHandler provides methods to handle url requests, returning web pages or handling CRUD operations
 // Christopher Dykes, 041013556
 type VegetableHandler struct {
 	service *s.VegetableService
 }
 
+// InitializeHandler initializes the handler given a VegetableService struct.
 // Christopher Dykes, 041013556
 func InitializeHandler(service *s.VegetableService) *VegetableHandler {
 	return &VegetableHandler{service}
 }
 
+// IndexHandler provides the index page for the web application.
 // Christopher Dykes, 041013556
 func (vh *VegetableHandler) IndexHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("presentation/views/index.gohtml"))
@@ -29,6 +32,7 @@ func (vh *VegetableHandler) IndexHandler(w http.ResponseWriter, r *http.Request)
 	}
 }
 
+// EditHandler provides the edit page to make changes to Vegetables
 // Christopher Dykes, 041013556
 func (vh *VegetableHandler) EditHandler(w http.ResponseWriter, r *http.Request) {
 	editTmpl := template.Must(template.ParseFiles("presentation/views/edit.gohtml"))
@@ -48,6 +52,7 @@ func (vh *VegetableHandler) EditHandler(w http.ResponseWriter, r *http.Request) 
 	}
 }
 
+// AddHandler provides the add vegetable page to well... add a Vegetable.
 // Christopher Dykes, 041013556
 func (vh VegetableHandler) AddHandler(w http.ResponseWriter, r *http.Request) {
 	editTmpl := template.Must(template.ParseFiles("presentation/views/add.gohtml"))
@@ -57,6 +62,7 @@ func (vh VegetableHandler) AddHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// DeleteHandler removes a Vegetable given a specified id from the url.
 // Christopher Dykes, 041013556
 func (vh *VegetableHandler) DeleteHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodDelete {
@@ -75,6 +81,7 @@ func (vh *VegetableHandler) DeleteHandler(w http.ResponseWriter, r *http.Request
 	vh.service.DeleteVegetableById(id)
 }
 
+// ReloadHandler resets changes made to the changes made to the in memory vegetable list, and reloads from the vegetable service.
 // Christopher Dykes, 041013556
 func (vh *VegetableHandler) ReloadHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
@@ -84,6 +91,7 @@ func (vh *VegetableHandler) ReloadHandler(w http.ResponseWriter, r *http.Request
 	vh.service.ReloadVegetables()
 }
 
+// UpdateHandler updates vegetable fields given an id. Redirects user to the index page.
 // Christopher Dykes, 041013556
 func (vh VegetableHandler) UpdateHandler(w http.ResponseWriter, r *http.Request) {
 
@@ -125,6 +133,7 @@ func (vh VegetableHandler) UpdateHandler(w http.ResponseWriter, r *http.Request)
 	http.Redirect(w, r, "/", http.StatusSeeOther) // 303
 }
 
+// CreateHandler creates a new vegetable and adds it to the in memory list. Redirects user to the index page.
 // Christopher Dykes, 041013556
 func (vh VegetableHandler) CreateHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
@@ -156,6 +165,8 @@ func (vh VegetableHandler) CreateHandler(w http.ResponseWriter, r *http.Request)
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
+// DownloadHandler creates the csv file and serves it to the client.
+// Christopher Dykes, 041013556
 func (vh *VegetableHandler) DownloadHandler(w http.ResponseWriter, r *http.Request) {
 	vh.service.WriteAsCsv()
 	w.Header().Set("Content-Disposition", "attachment; filename="+path.Base("./files/vegetables.csv"))

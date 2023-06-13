@@ -5,7 +5,7 @@ import (
 	"strconv"
 )
 
-// Vegetable represents a record from the csv file.
+// Vegetable struct represents a record from the csv file.
 // Christopher Dykes, 041013556
 type Vegetable struct {
 	Id            int
