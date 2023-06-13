@@ -9,59 +9,61 @@
 <h2>Christopher Dykes - 041013556</h2>
 <button onclick="location.href='/add/'">Add Vegetable</button>
 <button onclick="reloadVegetables()">Reload Data</button>
-<button onclick="location.href='/download/'">Export as CSV</button>
+<button onclick="downloadVegetables()">Export as CSV</button>
 <br>
-<table>
-    <thead>
-    <tr>
-        <th>Ref Date</th>
-        <th>Geo</th>
-        <th>Dgu Id</th>
-        <th>Type of Product</th>
-        <th>Type of Storage</th>
-        <th>Uom</th>
-        <th>UomId</th>
-        <th>Scalar Factor</th>
-        <th>Scalar Id</th>
-        <th>Vector</th>
-        <th>Coordinate</th>
-        <th>Value</th>
-        <th>Status</th>
-        <th>Symbol</th>
-        <th>Terminated</th>
-        <th>Decimals</th>
-        <th>Options</th>
-    </tr>
-    </thead>
-    <tbody>
-    {{range .}}
-        <tr>
-            <td>{{.Id}}</td>
-            <td>{{.RefDate}}</td>
-            <td>{{.Geo}}</td>
-            <td>{{.DguId}}</td>
-            <td>{{.TypeOfProduct}}</td>
-            <td>{{.TypeOfStorage}}</td>
-            <td>{{.Uom}}</td>
-            <td>{{.UomId}}</td>
-            <td>{{.ScalarFactor}}</td>
-            <td>{{.ScalarId}}</td>
-            <td>{{.Vector}}</td>
-            <td>{{.Coordinate}}</td>
-            <td>{{.Value}}</td>
-            <td>{{.Status}}</td>
-            <td>{{.Symbol}}</td>
-            <td>{{.Terminated}}</td>
-            <td>{{.Decimals}}</td>
-            <td>
-                <button onclick="location.href='/edit/{{.Id}}'">Edit</button>
-                <button onclick="deleteVegetable({{.Id}})">Delete</button>
-            </td>
-        </tr>
-    {{end}}
-
-    </tbody>
-</table>
+<div style="overflow-y: auto; height: 750px">
+    <table style="width: 100%; text-align: left;">
+        <thead >
+            <tr>
+                <th>Id</th>
+                <th>Ref Date</th>
+                <th>Geo</th>
+                <th>Dgu Id</th>
+                <th>Type of Product</th>
+                <th>Type of Storage</th>
+                <th>Uom</th>
+                <th>UomId</th>
+                <th>Scalar Factor</th>
+                <th>Scalar Id</th>
+                <th>Vector</th>
+                <th>Coordinate</th>
+                <th>Value</th>
+                <th>Status</th>
+                <th>Symbol</th>
+                <th>Terminated</th>
+                <th>Decimals</th>
+                <th>Options</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{range .}}
+            <tr>
+                <td>{{.Id}}</td>
+                <td>{{.RefDate}}</td>
+                <td>{{.Geo}}</td>
+                <td>{{.DguId}}</td>
+                <td>{{.TypeOfProduct}}</td>
+                <td>{{.TypeOfStorage}}</td>
+                <td>{{.Uom}}</td>
+                <td>{{.UomId}}</td>
+                <td>{{.ScalarFactor}}</td>
+                <td>{{.ScalarId}}</td>
+                <td>{{.Vector}}</td>
+                <td>{{.Coordinate}}</td>
+                <td>{{.Value}}</td>
+                <td>{{.Status}}</td>
+                <td>{{.Symbol}}</td>
+                <td>{{.Terminated}}</td>
+                <td>{{.Decimals}}</td>
+                <td>
+                    <button onclick="location.href='/edit/{{.Id}}'">Edit</button>
+                    <button onclick="deleteVegetable({{.Id}})">Delete</button>
+                </td>
+            </tr>
+        {{end}}
+        </tbody>
+    </table>
+</div>
 
 <script>
     const deleteVegetable = (id) => {
@@ -72,6 +74,7 @@
             location.reload();
         })
     }
+
     const reloadVegetables = () =>  {
         fetch("http://localhost:8080/reload/", {
             method: "GET",
@@ -79,6 +82,26 @@
             location.reload();
         })
     }
+
+    const downloadVegetables = () => {
+        fetch("http://localhost:8080/download")
+            .then(response => response.blob())
+            .then(blob => {
+                let link = document.createElement("a");
+                link.href = window.URL.createObjectURL(blob);
+                link.download = "vegetables.csv";
+
+                link.dispatchEvent(
+                    new MouseEvent('click', {
+                        bubbles: true,
+                        cancelable: true,
+                        view: window
+                    })
+                );
+                link.remove();
+            });
+    }
+
 </script>
 
 </body>

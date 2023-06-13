@@ -10,14 +10,17 @@ import (
 	"strconv"
 )
 
+// Christopher Dykes, 041013556
 type VegetableHandler struct {
 	service *s.VegetableService
 }
 
+// Christopher Dykes, 041013556
 func InitializeHandler(service *s.VegetableService) *VegetableHandler {
 	return &VegetableHandler{service}
 }
 
+// Christopher Dykes, 041013556
 func (vh *VegetableHandler) IndexHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("presentation/views/index.gohtml"))
 	err := tmpl.Execute(w, vh.service.ReadAllVegetables())
@@ -26,6 +29,7 @@ func (vh *VegetableHandler) IndexHandler(w http.ResponseWriter, r *http.Request)
 	}
 }
 
+// Christopher Dykes, 041013556
 func (vh *VegetableHandler) EditHandler(w http.ResponseWriter, r *http.Request) {
 	editTmpl := template.Must(template.ParseFiles("presentation/views/edit.gohtml"))
 	id, err := strconv.Atoi(path.Base(r.URL.Path))
@@ -44,6 +48,7 @@ func (vh *VegetableHandler) EditHandler(w http.ResponseWriter, r *http.Request) 
 	}
 }
 
+// Christopher Dykes, 041013556
 func (vh VegetableHandler) AddHandler(w http.ResponseWriter, r *http.Request) {
 	editTmpl := template.Must(template.ParseFiles("presentation/views/add.gohtml"))
 	err := editTmpl.Execute(w, m.Vegetable{})
@@ -52,9 +57,10 @@ func (vh VegetableHandler) AddHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Christopher Dykes, 041013556
 func (vh *VegetableHandler) DeleteHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodDelete {
-		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		http.Error(w, "Invalid r method", http.StatusMethodNotAllowed)
 		return
 	}
 	id, err := strconv.Atoi(path.Base(r.URL.Path))
@@ -69,14 +75,16 @@ func (vh *VegetableHandler) DeleteHandler(w http.ResponseWriter, r *http.Request
 	vh.service.DeleteVegetableById(id)
 }
 
+// Christopher Dykes, 041013556
 func (vh *VegetableHandler) ReloadHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
-		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		http.Error(w, "Invalid r method", http.StatusMethodNotAllowed)
 		return
 	}
 	vh.service.ReloadVegetables()
 }
 
+// Christopher Dykes, 041013556
 func (vh VegetableHandler) UpdateHandler(w http.ResponseWriter, r *http.Request) {
 
 	id, err := strconv.Atoi(path.Base(r.URL.Path))
@@ -117,6 +125,7 @@ func (vh VegetableHandler) UpdateHandler(w http.ResponseWriter, r *http.Request)
 	http.Redirect(w, r, "/", http.StatusSeeOther) // 303
 }
 
+// Christopher Dykes, 041013556
 func (vh VegetableHandler) CreateHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
@@ -147,6 +156,9 @@ func (vh VegetableHandler) CreateHandler(w http.ResponseWriter, r *http.Request)
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
-func (vh *VegetableHandler) DownloadHandler(w http.ResponseWriter, request *http.Request) {
+func (vh *VegetableHandler) DownloadHandler(w http.ResponseWriter, r *http.Request) {
 	vh.service.WriteAsCsv()
+	w.Header().Set("Content-Disposition", "attachment; filename="+path.Base("./files/vegetables.csv"))
+	w.Header().Set("Content-Type", "text/csv")
+	http.ServeFile(w, r, "./files/vegetables.csv")
 }

@@ -5,6 +5,8 @@ import (
 	"testing"
 )
 
+// TestRemoveVegetable ensures that vegetables are actually removed from the list.
+// Christopher Dykes, 041013556
 func TestRemoveVegetable(t *testing.T) {
 	vegetables := s.InitializeVegetables()
 	initialCount := len(vegetables.ReadAllVegetables())
