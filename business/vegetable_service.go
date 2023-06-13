@@ -24,6 +24,7 @@ func (vs *VegetableService) ReloadVegetables() {
 }
 
 func (vs *VegetableService) CreateVegetable(vegetable v.Vegetable) {
+	vegetable.Id = len(vs.vegetables)
 	vs.vegetables = append(vs.vegetables, vegetable)
 }
 

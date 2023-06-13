@@ -34,30 +34,32 @@
     </tr>
     </thead>
     <tbody>
-    {{range $index, $element := .}}
+    {{range .}}
         <tr>
-            <td>{{$element.RefDate}}</td>
-            <td>{{$element.Geo}}</td>
-            <td>{{$element.DguId}}</td>
-            <td>{{$element.TypeOfProduct}}</td>
-            <td>{{$element.TypeOfStorage}}</td>
-            <td>{{$element.Uom}}</td>
-            <td>{{$element.UomId}}</td>
-            <td>{{$element.ScalarFactor}}</td>
-            <td>{{$element.ScalarId}}</td>
-            <td>{{$element.Vector}}</td>
-            <td>{{$element.Coordinate}}</td>
-            <td>{{$element.Value}}</td>
-            <td>{{$element.Status}}</td>
-            <td>{{$element.Symbol}}</td>
-            <td>{{$element.Terminated}}</td>
-            <td>{{$element.Decimals}}</td>
+            <td>{{.Id}}</td>
+            <td>{{.RefDate}}</td>
+            <td>{{.Geo}}</td>
+            <td>{{.DguId}}</td>
+            <td>{{.TypeOfProduct}}</td>
+            <td>{{.TypeOfStorage}}</td>
+            <td>{{.Uom}}</td>
+            <td>{{.UomId}}</td>
+            <td>{{.ScalarFactor}}</td>
+            <td>{{.ScalarId}}</td>
+            <td>{{.Vector}}</td>
+            <td>{{.Coordinate}}</td>
+            <td>{{.Value}}</td>
+            <td>{{.Status}}</td>
+            <td>{{.Symbol}}</td>
+            <td>{{.Terminated}}</td>
+            <td>{{.Decimals}}</td>
             <td>
-                <button onclick="location.href='/edit/{{$index}}'">Edit</button>
-                <button onclick="deleteVegetable({{$index}})">Delete</button>
+                <button onclick="location.href='/edit/{{.Id}}'">Edit</button>
+                <button onclick="deleteVegetable({{.Id}})">Delete</button>
             </td>
         </tr>
     {{end}}
+
     </tbody>
 </table>
 
