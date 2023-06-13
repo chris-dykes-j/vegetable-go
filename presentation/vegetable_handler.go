@@ -18,79 +18,79 @@ func InitializeHandler(service *s.VegetableService) *VegetableHandler {
 	return &VegetableHandler{service}
 }
 
-func (vh *VegetableHandler) IndexHandler(writer http.ResponseWriter, r *http.Request) {
+func (vh *VegetableHandler) IndexHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("presentation/views/index.gohtml"))
-	err := tmpl.Execute(writer, vh.service.ReadAllVegetables())
+	err := tmpl.Execute(w, vh.service.ReadAllVegetables())
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-func (vh *VegetableHandler) EditHandler(writer http.ResponseWriter, r *http.Request) {
+func (vh *VegetableHandler) EditHandler(w http.ResponseWriter, r *http.Request) {
 	editTmpl := template.Must(template.ParseFiles("presentation/views/edit.gohtml"))
 	id, err := strconv.Atoi(path.Base(r.URL.Path))
 	if err != nil {
-		http.Error(writer, "Invalid ID", http.StatusBadRequest)
+		http.Error(w, "Invalid ID", http.StatusBadRequest)
 		return
 	}
 	if id < 0 || id >= len(vh.service.ReadAllVegetables()) {
-		http.Error(writer, "Invalid ID", http.StatusBadRequest)
+		http.Error(w, "Invalid ID", http.StatusBadRequest)
 		return
 	}
 
-	err = editTmpl.Execute(writer, vh.service.ReadVegetableById(id))
+	err = editTmpl.Execute(w, vh.service.ReadVegetableById(id))
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-func (vh VegetableHandler) AddHandler(writer http.ResponseWriter, r *http.Request) {
+func (vh VegetableHandler) AddHandler(w http.ResponseWriter, r *http.Request) {
 	editTmpl := template.Must(template.ParseFiles("presentation/views/add.gohtml"))
-	err := editTmpl.Execute(writer, m.Vegetable{})
+	err := editTmpl.Execute(w, m.Vegetable{})
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-func (vh *VegetableHandler) DeleteHandler(writer http.ResponseWriter, r *http.Request) {
+func (vh *VegetableHandler) DeleteHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodDelete {
-		http.Error(writer, "Invalid request method", http.StatusMethodNotAllowed)
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
 	}
 	id, err := strconv.Atoi(path.Base(r.URL.Path))
 	if err != nil {
-		http.Error(writer, "Invalid ID", http.StatusBadRequest)
+		http.Error(w, "Invalid ID", http.StatusBadRequest)
 		return
 	}
 	if id < 0 || id >= len(vh.service.ReadAllVegetables()) {
-		http.Error(writer, "Invalid ID", http.StatusBadRequest)
+		http.Error(w, "Invalid ID", http.StatusBadRequest)
 		return
 	}
 	vh.service.DeleteVegetableById(id)
 }
 
-func (vh *VegetableHandler) ReloadHandler(writer http.ResponseWriter, r *http.Request) {
+func (vh *VegetableHandler) ReloadHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
-		http.Error(writer, "Invalid request method", http.StatusMethodNotAllowed)
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
 	}
 	vh.service.ReloadVegetables()
 }
 
-func (vh VegetableHandler) UpdateHandler(writer http.ResponseWriter, r *http.Request) {
+func (vh VegetableHandler) UpdateHandler(w http.ResponseWriter, r *http.Request) {
 
 	id, err := strconv.Atoi(path.Base(r.URL.Path))
 	if err != nil {
-		http.Error(writer, "Invalid ID", http.StatusBadRequest)
+		http.Error(w, "Invalid ID", http.StatusBadRequest)
 		return
 	}
 	if id < 0 || id >= len(vh.service.ReadAllVegetables()) {
-		http.Error(writer, "Invalid ID", http.StatusBadRequest)
+		http.Error(w, "Invalid ID", http.StatusBadRequest)
 		return
 	}
 	err = r.ParseForm()
 	if err != nil {
-		http.Error(writer, "Can't parse form", http.StatusInternalServerError)
+		http.Error(w, "Can't parse form", http.StatusInternalServerError)
 		return
 	}
 
@@ -114,13 +114,13 @@ func (vh VegetableHandler) UpdateHandler(writer http.ResponseWriter, r *http.Req
 	}
 
 	vh.service.UpdateVegetableById(id, vegetable)
-	vh.IndexHandler(writer, r)
+	http.Redirect(w, r, "/", http.StatusSeeOther) // 303
 }
 
-func (vh VegetableHandler) CreateHandler(writer http.ResponseWriter, r *http.Request) {
+func (vh VegetableHandler) CreateHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
-		http.Error(writer, "Can't parse form", http.StatusInternalServerError)
+		http.Error(w, "Can't parse form", http.StatusInternalServerError)
 		return
 	}
 
@@ -144,9 +144,9 @@ func (vh VegetableHandler) CreateHandler(writer http.ResponseWriter, r *http.Req
 	}
 
 	vh.service.CreateVegetable(vegetable)
-	vh.IndexHandler(writer, r)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
-func (vh *VegetableHandler) DownloadHandler(writer http.ResponseWriter, request *http.Request) {
-
+func (vh *VegetableHandler) DownloadHandler(w http.ResponseWriter, request *http.Request) {
+	vh.service.WriteAsCsv()
 }

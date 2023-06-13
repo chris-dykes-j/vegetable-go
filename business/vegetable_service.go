@@ -27,23 +27,23 @@ func (vs *VegetableService) CreateVegetable(vegetable v.Vegetable) {
 	vs.vegetables = append(vs.vegetables, vegetable)
 }
 
-func (vs VegetableService) ReadAllVegetables() []v.Vegetable {
+func (vs *VegetableService) ReadAllVegetables() []v.Vegetable {
 	return vs.vegetables
 }
 
-func (vs VegetableService) ReadVegetableById(id int) v.Vegetable {
+func (vs *VegetableService) ReadVegetableById(id int) v.Vegetable {
 	return vs.vegetables[id]
 }
 
-func (vs VegetableService) UpdateVegetableById(id int, vegetable v.Vegetable) {
+func (vs *VegetableService) UpdateVegetableById(id int, vegetable v.Vegetable) {
 	vs.vegetables[id] = vegetable
 }
 
-func (vs VegetableService) DeleteVegetableById(id int) {
-	vs.vegetables = append(vs.vegetables[:id], vs.vegetables[id+1:]...) // slicing wizardry...
+func (vs *VegetableService) DeleteVegetableById(id int) {
+	vs.vegetables = append(vs.vegetables[:id], vs.vegetables[id+1:]...)
 }
 
-func (vs VegetableService) WriteAsCsv() {
+func (vs *VegetableService) WriteAsCsv() {
 	file, err := os.Create("files/vegetables.csv")
 	if err != nil {
 		log.Fatal(err)

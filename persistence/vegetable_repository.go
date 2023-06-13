@@ -11,7 +11,8 @@ import (
 // GetOneHundredVegetables reads rows from the csv file and returns an array of delicious Vegetables.
 // Christopher Dykes, 041013556
 func GetOneHundredVegetables() []models.Vegetable {
-	file, err := os.Open("files/32100260.csv")
+	// Relative path had issues with the test, and this application will be changed to use a database connection, so for now an absolute path is good enough.
+	file, err := os.Open("C:/Users/chris/go/src/practical/files/32100260.csv")
 	if err != nil {
 		log.Fatal(err)
 	}
