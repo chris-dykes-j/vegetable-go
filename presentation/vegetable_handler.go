@@ -145,7 +145,6 @@ func (vh VegetableHandler) CreateHandler(w http.ResponseWriter, r *http.Request)
 	}
 
 	vegetable := m.Vegetable{
-		Id:            1,
 		RefDate:       r.FormValue("RefDate"),
 		Geo:           r.FormValue("Geo"),
 		DguId:         r.FormValue("DguId"),
