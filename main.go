@@ -10,8 +10,8 @@ import (
 // main is the entry point for the application. Contains the service, handler, manages routes.
 // Christopher Dykes, 041013556
 func main() {
-	vegetables := s.InitializeVegetables()
-	handler := h.InitializeHandler(vegetables)
+	vegetableService := s.InitializeVegetables()
+	handler := h.InitializeHandler(vegetableService)
 
 	http.HandleFunc("/", handler.IndexHandler)
 	http.HandleFunc("/edit/", handler.EditHandler)

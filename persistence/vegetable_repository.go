@@ -1,5 +1,6 @@
 package persistence
 
+// Christopher Dykes, 041013556
 import (
 	"encoding/csv"
 	"io"
@@ -28,6 +29,7 @@ func GetOneHundredVegetables() []models.Vegetable {
 	reader := csv.NewReader(file)
 	reader.LazyQuotes = true
 	_, _ = reader.Read()
+	// Christopher Dykes, 041013556
 	for i := 0; i < 100; i++ { // go's version of 'while true'
 		line, err := reader.Read()
 		if err == io.EOF {
