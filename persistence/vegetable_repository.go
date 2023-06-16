@@ -30,7 +30,7 @@ func GetOneHundredVegetables() []models.Vegetable {
 	reader.LazyQuotes = true
 	_, _ = reader.Read()
 	// Christopher Dykes, 041013556
-	for i := 0; i < 100; i++ { // go's version of 'while true'
+	for i := 0; i < 100; i++ {
 		line, err := reader.Read()
 		if err == io.EOF {
 			break
