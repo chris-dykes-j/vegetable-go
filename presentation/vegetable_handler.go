@@ -111,6 +111,7 @@ func (vh VegetableHandler) UpdateHandler(w http.ResponseWriter, r *http.Request)
 	}
 
 	vegetable := m.Vegetable{
+		Id:            id,
 		RefDate:       r.FormValue("RefDate"),
 		Geo:           r.FormValue("Geo"),
 		DguId:         r.FormValue("DguId"),
@@ -136,6 +137,7 @@ func (vh VegetableHandler) UpdateHandler(w http.ResponseWriter, r *http.Request)
 // CreateHandler creates a new vegetable and adds it to the in memory list. Redirects user to the index page.
 // Christopher Dykes, 041013556
 func (vh VegetableHandler) CreateHandler(w http.ResponseWriter, r *http.Request) {
+
 	err := r.ParseForm()
 	if err != nil {
 		http.Error(w, "Can't parse form", http.StatusInternalServerError)
@@ -143,6 +145,7 @@ func (vh VegetableHandler) CreateHandler(w http.ResponseWriter, r *http.Request)
 	}
 
 	vegetable := m.Vegetable{
+		Id:            1,
 		RefDate:       r.FormValue("RefDate"),
 		Geo:           r.FormValue("Geo"),
 		DguId:         r.FormValue("DguId"),

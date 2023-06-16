@@ -8,13 +8,14 @@ import (
 	r "practical/persistence"
 )
 
-// VegetableService is a service layer struct that provides methods to interact with a list of Vegetables
+// VegetableService is a service layer struct that provides methods to interact with a list of Vegetables.
 // Christopher Dykes, 041013556
 type VegetableService struct {
 	vegetables []v.Vegetable
 }
 
-// InitializeVegetables initializes the application's in memory data for CRUD operations
+// InitializeVegetables initializes the application's in memory data for CRUD operations.
+// Returns the list of vegetables
 // Christopher Dykes, 041013556
 func InitializeVegetables() *VegetableService {
 	vegetables := r.GetOneHundredVegetables()
@@ -27,7 +28,7 @@ func (vs *VegetableService) ReloadVegetables() {
 	vs.vegetables = r.GetOneHundredVegetables()
 }
 
-// CreateVegetable adds a new vegetable to the list of vegetables
+// CreateVegetable adds a new vegetable to the list of vegetables.
 // Christopher Dykes, 041013556
 func (vs *VegetableService) CreateVegetable(vegetable v.Vegetable) {
 	vegetable.Id = len(vs.vegetables)
