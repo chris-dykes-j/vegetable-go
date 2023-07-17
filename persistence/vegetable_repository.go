@@ -1,62 +1,44 @@
 package persistence
 
-// Christopher Dykes, 041013556
 import (
-	"encoding/csv"
-	"io"
+	"context"
+	"github.com/jackc/pgx/v5"
 	"log"
-	"os"
 	"practical/models"
 )
 
-// GetOneHundredVegetables reads rows from the csv file and returns an array of delicious Vegetables.
+// GetAllVegetables reads all the rows from the database and returns an array of delicious Vegetables.
 // Christopher Dykes, 041013556
-func GetOneHundredVegetables() []models.Vegetable {
-	// Relative path had issues with the test, and this application will be changed to use a database connection,
-	// so for now an absolute path is good enough.
-	file, err := os.Open("C:/Users/chris/go/src/practical/files/32100260.csv")
+func GetAllVegetables() []models.Vegetable {
+	conn, err := pgx.Connect(context.Background(), "postgres://postgres:coolpasswordbro@localhost:5432/postgres")
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer func(file *os.File) {
-		err := file.Close()
-		if err != nil {
-			log.Fatal(err)
+	defer func(conn *pgx.Conn, ctx context.Context) {
+		err2 := conn.Close(ctx)
+		if err2 != nil {
+			log.Fatal(err2)
 		}
-	}(file)
+	}(conn, context.Background())
+
+	rows, err := conn.Query(context.Background(), "SELECT * FROM vegetable")
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	var vegetables []models.Vegetable
-	reader := csv.NewReader(file)
-	reader.LazyQuotes = true
-	_, _ = reader.Read()
-	// Christopher Dykes, 041013556
-	for i := 0; i < 100; i++ {
-		line, err := reader.Read()
-		if err == io.EOF {
-			break
-		}
+	for rows.Next() {
+		var vegetable models.Vegetable
+		err = rows.Scan(&vegetable.Id, &vegetable.RefDate, &vegetable.Geo, &vegetable.DguId,
+			&vegetable.TypeOfProduct, &vegetable.TypeOfStorage, &vegetable.Uom, &vegetable.UomId,
+			&vegetable.ScalarFactor, &vegetable.ScalarId, &vegetable.Vector, &vegetable.Coordinate,
+			&vegetable.Value, &vegetable.Status, &vegetable.Symbol, &vegetable.Terminated,
+			&vegetable.Decimals)
+
 		if err != nil {
 			log.Fatal(err)
 		}
-		vegetables = append(vegetables, models.Vegetable{
-			Id:            i,
-			RefDate:       line[0],
-			Geo:           line[1],
-			DguId:         line[2],
-			TypeOfProduct: line[3],
-			TypeOfStorage: line[4],
-			Uom:           line[5],
-			UomId:         line[6],
-			ScalarFactor:  line[7],
-			ScalarId:      line[8],
-			Vector:        line[9],
-			Coordinate:    line[10],
-			Value:         line[11],
-			Status:        line[12],
-			Symbol:        line[13],
-			Terminated:    line[14],
-			Decimals:      line[15],
-		})
+		vegetables = append(vegetables, vegetable)
 	}
 	return vegetables
 }

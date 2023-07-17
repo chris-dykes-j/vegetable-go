@@ -18,14 +18,14 @@ type VegetableService struct {
 // Returns the list of vegetables
 // Christopher Dykes, 041013556
 func InitializeVegetables() *VegetableService {
-	vegetables := r.GetOneHundredVegetables()
+	vegetables := r.GetAllVegetables()
 	return &VegetableService{vegetables}
 }
 
 // ReloadVegetables reloads the in memory data from the repository
 // Christopher Dykes, 041013556
 func (vs *VegetableService) ReloadVegetables() {
-	vs.vegetables = r.GetOneHundredVegetables()
+	vs.vegetables = r.GetAllVegetables()
 }
 
 // CreateVegetable adds a new vegetable to the list of vegetables.
