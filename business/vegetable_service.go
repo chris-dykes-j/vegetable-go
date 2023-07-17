@@ -11,56 +11,55 @@ import (
 // VegetableService is a service layer struct that provides methods to interact with a list of Vegetables.
 // Christopher Dykes, 041013556
 type VegetableService struct {
-	vegetables []v.Vegetable
+	repository *r.VegetableRepository
 }
 
-// InitializeVegetables initializes the application's in memory data for CRUD operations.
-// Returns the list of vegetables
+// InitializeService creates the VegetableService for performing CRUD operations.
+// Initializes the repository for database interaction.
+// Returns the VegetableService
 // Christopher Dykes, 041013556
-func InitializeVegetables() *VegetableService {
-	vegetables := r.GetAllVegetables()
-	return &VegetableService{vegetables}
+func InitializeService() *VegetableService {
+	return &VegetableService{r.InitializeRepository()}
 }
 
-// ReloadVegetables reloads the in memory data from the repository
-// Christopher Dykes, 041013556
-func (vs *VegetableService) ReloadVegetables() {
-	vs.vegetables = r.GetAllVegetables()
-}
-
-// CreateVegetable adds a new vegetable to the list of vegetables.
-// Christopher Dykes, 041013556
-func (vs *VegetableService) CreateVegetable(vegetable v.Vegetable) {
-	vegetable.Id = len(vs.vegetables)
-	vs.vegetables = append(vs.vegetables, vegetable)
-}
-
-// ReadAllVegetables reads all vegetables currently in the application's memory.
+// ReadAllVegetables reads all vegetables from the application's database.
 // Returns an array of Vegetable structs.
 // Christopher Dykes, 041013556
 func (vs *VegetableService) ReadAllVegetables() []v.Vegetable {
-	return vs.vegetables
+	return vs.repository.ReadAllVegetables()
+}
+
+// CreateVegetable adds a new vegetable to database.
+// Christopher Dykes, 041013556
+func (vs *VegetableService) CreateVegetable(vegetable v.Vegetable) {
+	vs.repository.CreateVegetable(vegetable)
 }
 
 // ReadVegetableById returns a Vegetable struct given its id
 // Christopher Dykes, 041013556
 func (vs *VegetableService) ReadVegetableById(id int) v.Vegetable {
-	return vs.vegetables[id]
+	return vs.repository.ReadVegetableById(id)
 }
 
-// UpdateVegetableById replaces the vegetable given its id, and an instance of a Vegetable.
+// UpdateVegetableById updates the vegetable given its id, and an instance of a Vegetable.
 // Christopher Dykes, 041013556
 func (vs *VegetableService) UpdateVegetableById(id int, vegetable v.Vegetable) {
-	vs.vegetables[id] = vegetable
+	vs.repository.UpdateVegetableById(id, vegetable)
 }
 
-// DeleteVegetableById removes a vegetable from the list in memory given its id
+// DeleteVegetableById removes a vegetable from the database permanently, given its id
 // Christopher Dykes, 041013556
 func (vs *VegetableService) DeleteVegetableById(id int) {
-	vs.vegetables = append(vs.vegetables[:id], vs.vegetables[id+1:]...)
+	vs.repository.DeleteVegetableById(id)
 }
 
-// WriteAsCsv creates a new csv file from the list of vegetables in memory.
+// ResetVegetables resets the entire database to it's initial state.
+// Christopher Dykes, 041013556
+func (vs *VegetableService) ResetVegetables() {
+	vs.repository.ResetVegetableTable()
+}
+
+// WriteAsCsv creates a new csv file from the application database.
 // Christopher Dykes, 041013556
 func (vs *VegetableService) WriteAsCsv() {
 	file, err := os.Create("files/vegetables.csv")
@@ -74,11 +73,10 @@ func (vs *VegetableService) WriteAsCsv() {
 		}
 	}(file)
 
-	// Christopher Dykes, 041013556
 	writer := csv.NewWriter(file)
 	defer writer.Flush()
 
-	for _, vegetable := range vs.vegetables {
+	for _, vegetable := range vs.repository.ReadAllVegetables() {
 		err := writer.Write(vegetable.ToStringArray())
 		if err != nil {
 			log.Fatal(err)

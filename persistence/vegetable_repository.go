@@ -7,21 +7,27 @@ import (
 	"practical/models"
 )
 
-// GetAllVegetables reads all the rows from the database and returns an array of delicious Vegetables.
-// Christopher Dykes, 041013556
-func GetAllVegetables() []models.Vegetable {
+// VegetableRepository contains a connection to the database for CRUD operations.
+type VegetableRepository struct {
+	conn *pgx.Conn
+}
+
+// InitializeRepository Creates a connection to the database, and initializes the repository struct.
+func InitializeRepository() *VegetableRepository {
 	conn, err := pgx.Connect(context.Background(), "postgres://postgres:coolpasswordbro@localhost:5432/postgres")
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer func(conn *pgx.Conn, ctx context.Context) {
-		err2 := conn.Close(ctx)
-		if err2 != nil {
-			log.Fatal(err2)
-		}
-	}(conn, context.Background())
 
-	rows, err := conn.Query(context.Background(), "SELECT * FROM vegetable")
+	return &VegetableRepository{
+		conn: conn,
+	}
+}
+
+// ReadAllVegetables reads all the rows from the database and returns an array of delicious Vegetables.
+// Christopher Dykes, 041013556
+func (vr *VegetableRepository) ReadAllVegetables() []models.Vegetable {
+	rows, err := vr.conn.Query(context.Background(), "SELECT * FROM vegetable")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -41,4 +47,95 @@ func GetAllVegetables() []models.Vegetable {
 		vegetables = append(vegetables, vegetable)
 	}
 	return vegetables
+}
+
+func (vr *VegetableRepository) CreateVegetable(vegetable models.Vegetable) {
+	_, err := vr.conn.Exec(context.Background(), `
+		INSERT INTO vegetable(
+			ref_date, geo, dguid, type_of_product, type_of_storage, uom, uom_id, 
+			scalar_factor, scalar_id, vector, coordinate, value, status, symbol, 
+			terminated, decimals
+		) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)`,
+		vegetable.RefDate, vegetable.Geo, vegetable.DguId, vegetable.TypeOfProduct,
+		vegetable.TypeOfStorage, vegetable.Uom, vegetable.UomId, vegetable.ScalarFactor,
+		vegetable.ScalarId, vegetable.Vector, vegetable.Coordinate, vegetable.Value,
+		vegetable.Status, vegetable.Symbol, vegetable.Terminated, vegetable.Decimals)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func (vr *VegetableRepository) ReadVegetableById(id int) models.Vegetable {
+	row, err := vr.conn.Query(context.Background(), "SELECT * FROM vegetable WHERE id = $1", id)
+	if err != nil {
+		log.Fatal(err)
+	}
+	var vegetable models.Vegetable
+	err = row.Scan(&vegetable.Id, &vegetable.RefDate, &vegetable.Geo, &vegetable.DguId,
+		&vegetable.TypeOfProduct, &vegetable.TypeOfStorage, &vegetable.Uom, &vegetable.UomId,
+		&vegetable.ScalarFactor, &vegetable.ScalarId, &vegetable.Vector, &vegetable.Coordinate,
+		&vegetable.Value, &vegetable.Status, &vegetable.Symbol, &vegetable.Terminated,
+		&vegetable.Decimals)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return vegetable
+}
+
+func (vr *VegetableRepository) UpdateVegetableById(id int, vegetable models.Vegetable) {
+	_, err := vr.conn.Exec(context.Background(), `
+		UPDATE vegetable
+		SET ref_date = $1, geo = $2, dguid = $3, type_of_product = $4, type_of_storage = $5, uom = $6, 
+		    uom_id = $7, scalar_factor = $8, scalar_id = $9, vector = $10, coordinate = $11, value = $12,
+		    status = $13, symbol = $14, terminated = $15, decimals = $16
+		WHERE id = $17`,
+		vegetable.RefDate, vegetable.Geo, vegetable.DguId, vegetable.TypeOfProduct,
+		vegetable.TypeOfStorage, vegetable.Uom, vegetable.UomId, vegetable.ScalarFactor,
+		vegetable.ScalarId, vegetable.Vector, vegetable.Coordinate, vegetable.Value,
+		vegetable.Status, vegetable.Symbol, vegetable.Terminated, vegetable.Decimals, id)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func (vr *VegetableRepository) DeleteVegetableById(id int) {
+	_, err := vr.conn.Exec(context.Background(), "DELETE FROM vegetable WHERE id = $1", id)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func (vr *VegetableRepository) ResetVegetableTable() {
+	_, err := vr.conn.Exec(context.Background(), `
+		DROP TABLE IF EXISTS vegetable;
+
+		CREATE TABLE vegetable(
+			id SERIAL PRIMARY KEY,
+			ref_date VARCHAR(255),
+			geo VARCHAR(255),
+			dguid VARCHAR(255),
+			type_of_product VARCHAR(255),
+			type_of_storage VARCHAR(255),
+			uom VARCHAR(255),
+			uom_id VARCHAR(255),
+			scalar_factor VARCHAR(255),
+			scalar_id VARCHAR(255),
+			vector VARCHAR(255),
+			coordinate VARCHAR(255),
+			value VARCHAR(255),
+			status VARCHAR(255),
+			symbol VARCHAR(255),
+			terminated VARCHAR(255),
+			decimals VARCHAR(255)
+		);
+
+		COPY vegetable(ref_date, geo, dguid, type_of_product, type_of_storage, uom, uom_id, scalar_factor, 
+		    scalar_id, vector, coordinate, value, status, symbol, terminated, decimals)
+			FROM 'C:\Users\Public\32100260.csv'
+			DELIMITER ','
+			CSV HEADER;
+	`)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

@@ -88,7 +88,7 @@ func (vh *VegetableHandler) ReloadHandler(w http.ResponseWriter, r *http.Request
 		http.Error(w, "Invalid r method", http.StatusMethodNotAllowed)
 		return
 	}
-	vh.service.ReloadVegetables()
+	vh.service.ResetVegetables()
 }
 
 // UpdateHandler updates vegetable fields given an id. Redirects user to the index page.
