@@ -31,6 +31,7 @@ func (vr *VegetableRepository) ReadAllVegetables() []models.Vegetable {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer rows.Close()
 
 	var vegetables []models.Vegetable
 	for rows.Next() {
@@ -46,6 +47,7 @@ func (vr *VegetableRepository) ReadAllVegetables() []models.Vegetable {
 		}
 		vegetables = append(vegetables, vegetable)
 	}
+
 	return vegetables
 }
 
@@ -70,15 +72,20 @@ func (vr *VegetableRepository) ReadVegetableById(id int) models.Vegetable {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer row.Close()
+
 	var vegetable models.Vegetable
-	err = row.Scan(&vegetable.Id, &vegetable.RefDate, &vegetable.Geo, &vegetable.DguId,
-		&vegetable.TypeOfProduct, &vegetable.TypeOfStorage, &vegetable.Uom, &vegetable.UomId,
-		&vegetable.ScalarFactor, &vegetable.ScalarId, &vegetable.Vector, &vegetable.Coordinate,
-		&vegetable.Value, &vegetable.Status, &vegetable.Symbol, &vegetable.Terminated,
-		&vegetable.Decimals)
-	if err != nil {
-		log.Fatal(err)
+	for row.Next() {
+		err = row.Scan(&vegetable.Id, &vegetable.RefDate, &vegetable.Geo, &vegetable.DguId,
+			&vegetable.TypeOfProduct, &vegetable.TypeOfStorage, &vegetable.Uom, &vegetable.UomId,
+			&vegetable.ScalarFactor, &vegetable.ScalarId, &vegetable.Vector, &vegetable.Coordinate,
+			&vegetable.Value, &vegetable.Status, &vegetable.Symbol, &vegetable.Terminated,
+			&vegetable.Decimals)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
+
 	return vegetable
 }
 
