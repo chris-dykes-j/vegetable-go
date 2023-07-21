@@ -51,6 +51,8 @@ func (vr *VegetableRepository) ReadAllVegetables() []models.Vegetable {
 	return vegetables
 }
 
+// CreateVegetable adds a vegetable to the database of nutritious Vegetables.
+// Christopher Dykes, 041013556
 func (vr *VegetableRepository) CreateVegetable(vegetable models.Vegetable) {
 	_, err := vr.conn.Exec(context.Background(), `
 		INSERT INTO vegetable(
@@ -67,6 +69,8 @@ func (vr *VegetableRepository) CreateVegetable(vegetable models.Vegetable) {
 	}
 }
 
+// ReadVegetableById reads a vegetable from the database and returns that vegetable as a Vegetable struct
+// Christopher Dykes, 041013556
 func (vr *VegetableRepository) ReadVegetableById(id int) models.Vegetable {
 	row, err := vr.conn.Query(context.Background(), "SELECT * FROM vegetable WHERE id = $1", id)
 	if err != nil {
@@ -89,6 +93,8 @@ func (vr *VegetableRepository) ReadVegetableById(id int) models.Vegetable {
 	return vegetable
 }
 
+// UpdateVegetableById updates a vegetable in the database given an id.
+// Christopher Dykes, 041013556
 func (vr *VegetableRepository) UpdateVegetableById(id int, vegetable models.Vegetable) {
 	_, err := vr.conn.Exec(context.Background(), `
 		UPDATE vegetable
@@ -105,6 +111,8 @@ func (vr *VegetableRepository) UpdateVegetableById(id int, vegetable models.Vege
 	}
 }
 
+// DeleteVegetableById removes a vegetable from the database given an id.
+// Christopher Dykes, 041013556
 func (vr *VegetableRepository) DeleteVegetableById(id int) {
 	_, err := vr.conn.Exec(context.Background(), "DELETE FROM vegetable WHERE id = $1", id)
 	if err != nil {
@@ -112,6 +120,8 @@ func (vr *VegetableRepository) DeleteVegetableById(id int) {
 	}
 }
 
+// ResetVegetableTable resets the database back to its original format, from the csv file with SQL magic.
+// Christopher Dykes, 041013556
 func (vr *VegetableRepository) ResetVegetableTable() {
 	_, err := vr.conn.Exec(context.Background(), `
 		DROP TABLE IF EXISTS vegetable;
