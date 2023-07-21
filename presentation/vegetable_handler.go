@@ -74,7 +74,7 @@ func (vh *VegetableHandler) DeleteHandler(w http.ResponseWriter, r *http.Request
 		http.Error(w, "Invalid ID", http.StatusBadRequest)
 		return
 	}
-	if id < 0 || id >= len(vh.service.ReadAllVegetables()) {
+	if id < 0 || id > len(vh.service.ReadAllVegetables()) {
 		http.Error(w, "Invalid ID", http.StatusBadRequest)
 		return
 	}

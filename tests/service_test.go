@@ -17,6 +17,8 @@ func TestRemoveVegetable(t *testing.T) {
 	if initialCount-1 != afterDeleteCount {
 		t.Fatalf("Vegetables length = %d, want %d", afterDeleteCount, initialCount-1)
 	}
+
+	vegetables.ResetVegetables()
 }
 
 // TestAddVegetable tests if vegetables are added to the database.
@@ -48,4 +50,6 @@ func TestAddVegetable(t *testing.T) {
 	if initialCount+1 != afterCreateCount {
 		t.Fatalf("Vegetables length = %d, want %d", afterCreateCount, initialCount+1)
 	}
+
+	vegetables.ResetVegetables()
 }
