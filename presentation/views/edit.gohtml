@@ -4,30 +4,114 @@
 <head>
     <meta charset="UTF-8">
     <title>Christopher Dykes - Vegetables</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
 <body>
-<h1>Vegetables</h1>
-<h2>Program by Christopher Dykes - 041013556</h2>
-<br>
-<form method="POST" action="/update/{{.Id}}">
-    <div>Ref Date: <input type="text" name="RefDate" value="{{.RefDate}}"></div>
-    <div>Geo: <input type="text" name="Geo" value="{{.Geo}}"></div>
-    <div>Dgu Id: <input type="text" name="DguId" value="{{.DguId}}"></div>
-    <div>Type of Product: <input type="text" name="TypeOfProduct" value="{{.TypeOfProduct}}"></div>
-    <div>Type of Storage: <input type="text" name="TypeOfStorage" value="{{.TypeOfStorage}}"></div>
-    <div>Uom: <input type="text" name="Uom" value="{{.Uom}}"></div>
-    <div>UomId: <input type="text" name="UomId" value="{{.UomId}}"></div>
-    <div>Scalar Factor: <input type="text" name="ScalarFactor" value="{{.ScalarFactor}}"></div>
-    <div>Scalar Id: <input type="text" name="ScalarId" value="{{.ScalarId}}"></div>
-    <div>Vector: <input type="text" name="Vector" value="{{.Vector}}"></div>
-    <div>Coordinate: <input type="text" name="Coordinate" value="{{.Coordinate}}"></div>
-    <div>Value: <input type="text" name="Value" value="{{.Value}}"></div>
-    <div>Status: <input type="text" name="Status" value="{{.Status}}"></div>
-    <div>Symbol: <input type="text" name="Symbol" value="{{.Symbol}}"></div>
-    <div>Terminated: <input type="text" name="Terminated" value="{{.Terminated}}"></div>
-    <div>Decimals: <input type="text" name="Decimals" value="{{.Decimals}}"></div>
-    <br>
-    <div><input type="submit" value="Update"></div>
-</form>
+
+<style>
+    .main-section {
+        padding-top: 220px;
+    }
+    .top-color {
+        background-color: rgba(0, 125, 156, 0.75);
+    }
+    .btn-color {
+        background-color: rgba(0, 125, 156, 0.75) !important;
+    }
+    .btn-color:hover {
+        background-color: rgba(0, 125, 156, 1) !important;
+    }
+    .link {
+        color: rgba(0, 125, 156, 0.75) !important;
+    }
+    .link:hover {
+        color: rgba(0, 125, 156, 1) !important;
+    }
+</style>
+
+<div class="fixed-top bg-white">
+    <div class="text-center text-light top-color pt-3 pb-2">
+        <h1 class="display-3">Vegetable Data</h1>
+        <p class="lead"><strong>Program by Christopher Dykes - 041013556</strong></p>
+    </div>
+    <div class="mt-3 mb-2 mx-5">
+        <a href="/" class="lead link">Home</a>
+    </div>
+</div>
+
+<div class="main-section mt-2 mx-5">
+    <form method="POST" action="/update/{{.Id}}">
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <label for="RefDate">Ref Date:</label>
+                <input type="text" id="RefDate" name="RefDate" value="{{.RefDate}}" class="form-control">
+            </div>
+            <div class="col-md-6 form-group">
+                <label for="Geo">Geo:</label>
+                <input type="text" id="Geo" name="Geo" value="{{.Geo}}" class="form-control">
+            </div>
+            <div class="col-md-6 form-group">
+                <label for="DguId">Dgu Id:</label>
+                <input type="text" id="DguId" name="DguId" value="{{.DguId}}" class="form-control">
+            </div>
+                <div class="col-md-6 form-group">
+                <label for="TypeOfProduct">Type of Product:</label>
+                <input type="text" id="TypeOfProduct" name="TypeOfProduct" value="{{.TypeOfProduct}}" class="form-control">
+            </div>
+                <div class="col-md-6 form-group">
+                <label for="TypeOfStorage">Type of Storage:</label>
+                <input type="text" id="TypeOfStorage" name="TypeOfStorage" value="{{.TypeOfStorage}}" class="form-control">
+            </div>
+                <div class="col-md-6 form-group">
+                <label for="Uom">Uom:</label>
+                <input type="text" id="Uom" name="Uom" value="{{.Uom}}" class="form-control">
+            </div>
+                <div class="col-md-6 form-group">
+                <label for="UomId">UomId:</label>
+                <input type="text" id="UomId" name="UomId" value="{{.UomId}}" class="form-control">
+            </div>
+                <div class="col-md-6 form-group">
+                <label for="ScalarFactor">Scalar Factor:</label>
+                <input type="text" id="ScalarFactor" name="ScalarFactor" value="{{.ScalarFactor}}" class="form-control">
+            </div>
+                <div class="col-md-6 form-group">
+                <label for="ScalarId">Scalar Id:</label>
+                <input type="text" id="ScalarId" name="ScalarId" value="{{.ScalarId}}" class="form-control">
+            </div>
+                <div class="col-md-6 form-group">
+                <label for="Vector">Vector:</label>
+                <input type="text" id="Vector" name="Vector" value="{{.Vector}}" class="form-control">
+            </div>
+                <div class="col-md-6 form-group">
+                <label for="Coordinate">Coordinate:</label>
+                <input type="text" id="Coordinate" name="Coordinate" value="{{.Coordinate}}" class="form-control">
+            </div>
+                <div class="col-md-6 form-group">
+                <label for="Value">Value:</label>
+                <input type="text" id="Value" name="Value" value="{{.Value}}" class="form-control">
+            </div>
+                <div class="col-md-6 form-group">
+                <label for="Status">Status:</label>
+                <input type="text" id="Status" name="Status" value="{{.Status}}" class="form-control">
+            </div>
+                <div class="col-md-6 form-group">
+                <label for="Symbol">Symbol:</label>
+                <input type="text" id="Symbol" name="Symbol" value="{{.Symbol}}" class="form-control">
+            </div>
+                <div class="col-md-6 form-group">
+                <label for="Terminated">Terminated:</label>
+                <input type="text" id="Terminated" name="Terminated" value="{{.Terminated}}" class="form-control">
+            </div>
+                <div class="col-md-6 form-group">
+                <label for="Decimals">Decimals:</label>
+                <input type="text" id="Decimals" name="Decimals" value="{{.Decimals}}" class="form-control">
+            </div>
+            <div class="form-group mt-2">
+                <input type="submit" value="Update" class="btn btn-color text-white">
+            </div>
+        </div>
+    </form>
+</div>
+
 </body>
 </html>

@@ -41,7 +41,7 @@ func (vh *VegetableHandler) EditHandler(w http.ResponseWriter, r *http.Request) 
 		http.Error(w, "Invalid ID", http.StatusBadRequest)
 		return
 	}
-	if id < 0 || id >= len(vh.service.ReadAllVegetables()) {
+	if id < 0 || id > len(vh.service.ReadAllVegetables()) {
 		http.Error(w, "Invalid ID", http.StatusBadRequest)
 		return
 	}
@@ -100,7 +100,7 @@ func (vh VegetableHandler) UpdateHandler(w http.ResponseWriter, r *http.Request)
 		http.Error(w, "Invalid ID", http.StatusBadRequest)
 		return
 	}
-	if id < 0 || id >= len(vh.service.ReadAllVegetables()) {
+	if id < 0 || id > len(vh.service.ReadAllVegetables()) {
 		http.Error(w, "Invalid ID", http.StatusBadRequest)
 		return
 	}
