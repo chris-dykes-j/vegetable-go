@@ -4,17 +4,41 @@
 <head>
     <meta charset="UTF-8">
     <title>Christopher Dykes - Vegetables</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
 <body>
-<h1>Vegetables</h1>
-<h2>Program by Christopher Dykes - 041013556</h2>
-<button onclick="location.href='/add/'">Add Vegetable</button>
-<button onclick="reloadVegetables()">Reload Data</button>
-<button onclick="downloadVegetables()">Export as CSV</button>
-<br>
-<div style="overflow-y: auto; height: 750px">
-    <table style="width: 100%; text-align: left;">
-        <thead >
+
+<style>
+    .main-section {
+        padding-top: 220px;
+    }
+    .top-color {
+        background-color: rgba(0, 125, 156, 0.75);
+    }
+    .btn-color {
+        background-color: rgba(0, 125, 156, 0.75) !important;
+    }
+    .btn-color:hover {
+        background-color: rgba(0, 125, 156, 1) !important;
+    }
+</style>
+
+<div class="fixed-top bg-white">
+    <div class="text-center text-light top-color pt-3 pb-2">
+        <h1 class="display-3">Vegetable Data</h1>
+        <p class="lead"><strong>Program by Christopher Dykes - 041013556</strong></p>
+    </div>
+
+    <div class="d-flex justify-content-center mt-2 mb-2">
+        <button class="btn m-2 btn-lg text-light btn-color" onclick="location.href='/add/'">Add Vegetable</button>
+        <button class="btn m-2 btn-lg text-light btn-color" onclick="reloadVegetables()">Reload Data</button>
+        <button class="btn m-2 btn-lg text-light btn-color" onclick="downloadVegetables()">Export as CSV</button>
+    </div>
+</div>
+
+<div class="main-section mt-2 mx-5">
+    <table class="table table-striped overflow-auto">
+        <thead>
             <tr>
                 <th>Id</th>
                 <th>Ref Date</th>

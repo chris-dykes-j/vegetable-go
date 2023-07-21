@@ -27,7 +27,7 @@ func InitializeRepository() *VegetableRepository {
 // ReadAllVegetables reads all the rows from the database and returns an array of delicious Vegetables.
 // Christopher Dykes, 041013556
 func (vr *VegetableRepository) ReadAllVegetables() []models.Vegetable {
-	rows, err := vr.conn.Query(context.Background(), "SELECT * FROM vegetable")
+	rows, err := vr.conn.Query(context.Background(), "SELECT * FROM vegetable ORDER BY id DESC")
 	if err != nil {
 		log.Fatal(err)
 	}
