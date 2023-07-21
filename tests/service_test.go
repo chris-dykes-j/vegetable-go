@@ -19,7 +19,8 @@ func TestRemoveVegetable(t *testing.T) {
 	}
 }
 
-// Added project 3
+// TestAddVegetable tests if vegetables are added to the database.
+// Christopher Dykes, 041013556
 func TestAddVegetable(t *testing.T) {
 	vegetables := s.InitializeService()
 	initialCount := len(vegetables.ReadAllVegetables())
@@ -45,6 +46,6 @@ func TestAddVegetable(t *testing.T) {
 	afterCreateCount := len(vegetables.ReadAllVegetables())
 
 	if initialCount+1 != afterCreateCount {
-		t.Fatalf("Vegetables length = %d, want %d", afterCreateCount, initialCount-1)
+		t.Fatalf("Vegetables length = %d, want %d", afterCreateCount, initialCount+1)
 	}
 }
