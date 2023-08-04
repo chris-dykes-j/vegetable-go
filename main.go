@@ -21,5 +21,6 @@ func main() {
 	http.HandleFunc("/update/", handler.UpdateHandler)
 	http.HandleFunc("/create/", handler.CreateHandler)
 	http.HandleFunc("/download/", handler.DownloadHandler)
+	http.HandleFunc("/search/", handler.SearchHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

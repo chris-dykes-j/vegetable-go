@@ -156,3 +156,36 @@ func (vr *VegetableRepository) ResetVegetableTable() {
 		log.Fatal(err)
 	}
 }
+
+func (vr *VegetableRepository) SearchVegetables(geo string, veg string, storage string, date string) []models.Vegetable {
+	rows, err := vr.conn.Query(context.Background(), `
+		SELECT * FROM vegetable
+		WHERE UPPER(geo) LIKE UPPER($1) 
+		  AND UPPER(type_of_product) LIKE UPPER($2) 
+		  AND UPPER(type_of_storage) LIKE UPPER($3)
+		  AND ref_date LIKE $4
+		ORDER BY id DESC`,
+		"%"+geo+"%", "%"+veg+"%", "%"+storage+"%", "%"+date+"%")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	var vegetables []models.Vegetable
+	for rows.Next() {
+		var vegetable models.Vegetable
+		err = rows.Scan(&vegetable.Id, &vegetable.RefDate, &vegetable.Geo, &vegetable.DguId,
+			&vegetable.TypeOfProduct, &vegetable.TypeOfStorage, &vegetable.Uom, &vegetable.UomId,
+			&vegetable.ScalarFactor, &vegetable.ScalarId, &vegetable.Vector, &vegetable.Coordinate,
+			&vegetable.Value, &vegetable.Status, &vegetable.Symbol, &vegetable.Terminated,
+			&vegetable.Decimals)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		vegetables = append(vegetables, vegetable)
+	}
+
+	return vegetables
+}

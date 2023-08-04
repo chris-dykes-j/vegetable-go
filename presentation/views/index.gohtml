@@ -5,12 +5,13 @@
     <meta charset="UTF-8">
     <title>Christopher Dykes - Vegetables</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 
 <style>
     .main-section {
-        padding-top: 220px;
+        padding-top: 330px;
     }
     .top-color {
         background-color: rgba(0, 125, 156, 0.75);
@@ -34,6 +35,29 @@
         <button class="btn m-2 btn-lg text-light btn-color" onclick="reloadVegetables()">Reload Data</button>
         <button class="btn m-2 btn-lg text-light btn-color" onclick="downloadVegetables()">Export as CSV</button>
     </div>
+
+    <div class="container mb-3">
+        <div class="row justify-content-center">
+            <div class="col-md-3 mb-2">
+                <input id="search-input-geo" type="search" class="form-control" placeholder="Geography" />
+            </div>
+            <div class="col-md-3 mb-2">
+                <input id="search-input-veg" type="search" class="form-control" placeholder="Type of Vegetable" />
+            </div>
+            <div class="col-md-3 mb-2">
+                <input id="search-input-storage" type="search" class="form-control" placeholder="Type of Storage" />
+            </div>
+            <div class="col-md-3 mb-2">
+                <input id="search-input-date" type="search" class="form-control" placeholder="Ref Date" />
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-2">
+            <button id="search-button" type="button" class="btn btn-color text-light">
+                Search Vegetables
+            </button>
+        </div>
+    </div>
+
 </div>
 
 <div class="main-section mt-2 mx-5">
@@ -127,6 +151,17 @@
             });
     }
 
+    $(document).ready(function() {
+        $('#search-button').click(() => {
+            const geography = $('#search-input-geo').val();
+            const vegetable = $('#search-input-veg').val();
+            const storage = $('#search-input-storage').val();
+            const date = $('#search-input-date').val();
+            window.location.href = `http://localhost:8080/search?geography=${encodeURIComponent(geography)}` +
+                `&vegetable=${encodeURIComponent(vegetable)}&storage=${encodeURIComponent(storage)}` +
+                `&date=${encodeURIComponent(date)}`;
+        });
+    });
 </script>
 
 </body>

@@ -84,3 +84,7 @@ func (vs *VegetableService) WriteAsCsv() {
 		}
 	}
 }
+
+func (vs *VegetableService) SearchVegetables(geo string, veg string, storage string, date string) []v.Vegetable {
+	return vs.repository.SearchVegetables(geo, veg, storage, date)
+}

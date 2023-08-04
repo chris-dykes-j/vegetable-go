@@ -32,6 +32,18 @@ func (vh *VegetableHandler) IndexHandler(w http.ResponseWriter, r *http.Request)
 	}
 }
 
+func (vh VegetableHandler) SearchHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("presentation/views/index.gohtml"))
+	geography := r.URL.Query().Get("geography")
+	vegetable := r.URL.Query().Get("vegetable")
+	storage := r.URL.Query().Get("storage")
+	date := r.URL.Query().Get("date")
+	err := tmpl.Execute(w, vh.service.SearchVegetables(geography, vegetable, storage, date))
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 // EditHandler provides the edit page to make changes to Vegetables
 // Christopher Dykes, 041013556
 func (vh *VegetableHandler) EditHandler(w http.ResponseWriter, r *http.Request) {
