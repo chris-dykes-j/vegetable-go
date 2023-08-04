@@ -85,6 +85,10 @@ func (vs *VegetableService) WriteAsCsv() {
 	}
 }
 
+// SearchVegetables Retrieves the vegetables with the given search parameters.
+// Parameters: All strings, geo is the Geography of the entry, veg the type of vegetable, storage it's storage type,
+// and date is well... the date
+// Christopher Dykes, 041013556
 func (vs *VegetableService) SearchVegetables(geo string, veg string, storage string, date string) []v.Vegetable {
 	return vs.repository.SearchVegetables(geo, veg, storage, date)
 }

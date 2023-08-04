@@ -32,6 +32,8 @@ func (vh *VegetableHandler) IndexHandler(w http.ResponseWriter, r *http.Request)
 	}
 }
 
+// SearchHandler provides the search page with the search query results.
+// Christopher Dykes, 041013556
 func (vh VegetableHandler) SearchHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("presentation/views/index.gohtml"))
 	geography := r.URL.Query().Get("geography")

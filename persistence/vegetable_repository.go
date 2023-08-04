@@ -157,6 +157,10 @@ func (vr *VegetableRepository) ResetVegetableTable() {
 	}
 }
 
+// SearchVegetables Searches the database for any entries that match the given search parameters.
+// Parameters: All strings, geo is the Geography of the entry, veg the type of vegetable, storage it's storage type.
+// The parameter date is expected to follow the structure "yyyy-mm" or be numeric.
+// Christopher Dykes, 041013556
 func (vr *VegetableRepository) SearchVegetables(geo string, veg string, storage string, date string) []models.Vegetable {
 	rows, err := vr.conn.Query(context.Background(), `
 		SELECT * FROM vegetable
