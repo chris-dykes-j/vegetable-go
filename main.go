@@ -21,6 +21,6 @@ func main() {
 	http.HandleFunc("/update/", handler.UpdateHandler)
 	http.HandleFunc("/create/", handler.CreateHandler)
 	http.HandleFunc("/download/", handler.DownloadHandler)
-	http.HandleFunc("/search/", handler.SearchHandler)
+	http.HandleFunc("/search/", handler.SearchHandler) // The new search route
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
